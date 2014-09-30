@@ -3,16 +3,19 @@ SimpleJinjaServer
 
 Simple Jinja2 Server - The tool help frontend developer for use jinja2 template
 
+Jinja is powerful template engine in python. If you don't know jinja, you can learn more in http://jinja.pocoo.org/. 
+
 
 How to use
 ==========
 
-1. First you need install python, pip, flask
-1. Install me via git with pip: pip install git+git://github.com/NamPNQ/SimpleJinjaServer
-1. Open terminal, cd to you working directory and run comand: python -m SimpleJinjaServer
+1. First you need install python, pip
+1. Install me via git with pip: `pip install git+git://github.com/NamPNQ/SimpleJinjaServer`
+1. Open terminal, cd to you working directory and run comand: `python -m SimpleJinjaServer`
 
 How to add custom filter, etc..
 ===============================
+
 Make a python in your working directory, in example i make file helper.py with content
 
 ```python
@@ -45,22 +48,33 @@ def add_helpers(app):
 
 Make sure your defined function name add_helpers
 
-Run command python -m SimpleJinjaServer 5000 False helper
+Run command `python -m SimpleJinjaServer 5000 False helper`
 
 Agruments
 =========
+
 First arguments is port
+
 Second arguments is enable debug
+
 Third agruments is filename helper
+
 
 Anything else
 =============
+
 Please make issuse
 
-Note: It only render file with extension html
+
+Note
+====
+
+It only render file with extension html
 
 Donate
 ======
+
 If project help you, please donate me via bitcoin: 1LKyH1jTP8Agd8FakpvydCP87HQzL85cFx
+
 I very happy, whether you donate 1 cent!
 
