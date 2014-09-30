@@ -8,7 +8,7 @@ setup(
     description="The tool help frontend developer for use jinja2 template",
     url="https://github.com/NamPNQ/SimpleJinjaServer",
     maintainer="nampnq",
-    packages=['SimpleJinjaServer'],
+    py_modules=['SimpleJinjaServer'],
     install_requires=[
         'flask'
     ]
