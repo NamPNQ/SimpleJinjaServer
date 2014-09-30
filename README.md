@@ -9,7 +9,7 @@ How to use
 
 1. First you need install python, pip, flask
 1. Install me via git with pip: pip install git+git://github.com/NamPNQ/SimpleJinjaServer
-1. Open terminal, cd to you working directory and run comand: python -m SimpleJinjaSever
+1. Open terminal, cd to you working directory and run comand: python -m SimpleJinjaServer
 
 How to add custom filter, etc..
 ===============================
