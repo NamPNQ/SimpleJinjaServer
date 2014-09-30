@@ -11,7 +11,7 @@ import importlib
 
 from flask import Flask, Response, render_template_string, abort, escape, render_template
 
-app = Flask(__name__, template_folder=os.getcwd())
+app = Flask(__name__, template_folder=os.getcwd(), static_folder=None)
 
 
 def translate_path(path):
