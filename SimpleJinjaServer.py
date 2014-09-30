@@ -9,7 +9,7 @@ import posixpath
 import sys
 import importlib
 
-from flask import Flask, Response, render_template_string, abort, escape, render_template
+from flask import Flask, Response, render_template_string, abort, escape, render_template, redirect
 
 app = Flask(__name__, template_folder=os.getcwd(), static_folder=None)
 
@@ -73,48 +73,51 @@ extensions_map.update({
 })
 
 
-@app.route('/', defaults={'path': ''})
+@app.route('/', defaults={'path': '/'})
 @app.route('/<path:path>')
 def index(path):
     path_orginal = path
     path = translate_path(path_orginal)
     if os.path.isdir(path):
-        try:
-            lists = os.listdir(path)
-        except os.error:
-            abort(404, "No permission to list directory")
-            return None
-        lists.sort(key=lambda a: a.lower())
-        lists_path = {}
-        for name in lists:
-            fullname = os.path.join(path, name)
-            displayname = linkname = name
-            # Append / for directories or @ for symbolic links
-            if os.path.isdir(fullname):
-                displayname = name + "/"
-                linkname = name + "/"
-            if os.path.islink(fullname):
-                displayname = name + "@"
-                # Note: a link to a directory displays with @ and links with /
-            lists_path.update({urllib.quote(linkname): escape(displayname)})
-        displaypath = escape(urllib.unquote(path_orginal))
-        template = '''
-        <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>
-        <title>Directory listing for {{displaypath}}</title>
-        <body>
-        <h2>Directory listing for {{displaypath}}</h2>
-        <hr>
-        <ul>
-        {% for name in lists %}
-            <li><a href="{{ name }}">{{lists[name]}}</a>
-        {% endfor %}
-        </ul>
-        <hr>
-        </body>
-        </html>
-        '''
+        if not path_orginal.endswith('/'):
+            return redirect(path_orginal+'/')
+        else:
+            try:
+                lists = os.listdir(path)
+            except os.error:
+                abort(404, "No permission to list directory")
+                return None
+            lists.sort(key=lambda a: a.lower())
+            lists_path = {}
+            for name in lists:
+                fullname = os.path.join(path, name)
+                displayname = linkname = name
+                # Append / for directories or @ for symbolic links
+                if os.path.isdir(fullname):
+                    displayname = name + "/"
+                    linkname = name + "/"
+                if os.path.islink(fullname):
+                    displayname = name + "@"
+                    # Note: a link to a directory displays with @ and links with /
+                lists_path.update({urllib.quote(linkname): escape(displayname)})
+            displaypath = escape(urllib.unquote(path_orginal))
+            template = '''
+            <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN"><html>
+            <title>Directory listing for {{displaypath}}</title>
+            <body>
+            <h2>Directory listing for {{displaypath}}</h2>
+            <hr>
+            <ul>
+            {% for name in lists %}
+                <li><a href="{{ name }}">{{lists[name]}}</a>
+            {% endfor %}
+            </ul>
+            <hr>
+            </body>
+            </html>
+            '''
 
-        return render_template_string(template, displaypath=displaypath, lists=lists_path)
+            return render_template_string(template, displaypath=displaypath, lists=lists_path)
     ctype = guess_type(path)
     try:
         # Always read in binary mode. Opening files in text mode may cause
