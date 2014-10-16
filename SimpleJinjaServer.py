@@ -130,7 +130,7 @@ def index(path):
     if ctype.startswith('text/'):
         return render_template(path_orginal)
     fs = os.fstat(f.fileno())
-    return app.send_static_file(path)
+    return app.send_file(path)
 
 
 def test(port=5000, debug=False, helper=None):
