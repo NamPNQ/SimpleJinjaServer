@@ -120,7 +120,7 @@ def index(path):
             return render_template_string(template, displaypath=displaypath, lists=lists_path)
     ctype = guess_type(path)
     if ctype.startswith('text/'):
-        return render_template(path_orginal)
+        return make_response(render_template(path_orginal),200,mimetype=ctype)
     return send_file(path, mimetype=ctype)
 
 
