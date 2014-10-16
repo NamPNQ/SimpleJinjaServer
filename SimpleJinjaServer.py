@@ -119,17 +119,9 @@ def index(path):
 
             return render_template_string(template, displaypath=displaypath, lists=lists_path)
     ctype = guess_type(path)
-    try:
-        # Always read in binary mode. Opening files in text mode may cause
-        # newline translations, making the actual size of the content
-        # transmitted *less* than the content-length!
-        f = open(path, 'rb')
-    except IOError:
-        abort(404, "File not found")
-        return None
     if ctype.startswith('text/'):
         return render_template(path_orginal)
-    return send_file(path)
+    return send_file(path, mimetype=ctype)
 
 
 def test(port=5000, debug=False, helper=None):
