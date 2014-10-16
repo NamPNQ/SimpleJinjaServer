@@ -9,7 +9,7 @@ import importlib
 import mimetypes
 
 from flask import Flask
-from flask import render_template_string, abort, escape, render_template, redirect, make_response
+from flask import render_template_string, abort, escape, render_template, redirect, make_response, send_file
 
 app = Flask(__name__, template_folder=os.getcwd(), static_folder=None)
 
@@ -129,8 +129,7 @@ def index(path):
         return None
     if ctype.startswith('text/'):
         return render_template(path_orginal)
-    fs = os.fstat(f.fileno())
-    return app.send_file(path)
+    return send_file(path)
 
 
 def test(port=5000, debug=False, helper=None):
