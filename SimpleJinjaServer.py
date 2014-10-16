@@ -1,5 +1,3 @@
-import mimetypes
-
 __author__ = 'nampnq'
 
 
@@ -8,8 +6,10 @@ import urllib
 import posixpath
 import sys
 import importlib
+import mimetypes
 
-from flask import Flask, Response, render_template_string, abort, escape, render_template, redirect
+from flask import Flask
+from flask import render_template_string, abort, escape, render_template, redirect, make_response
 
 app = Flask(__name__, template_folder=os.getcwd(), static_folder=None)
 
@@ -127,14 +127,9 @@ def index(path):
     except IOError:
         abort(404, "File not found")
         return None
-    if path.endswith('.html'):
+    if ctype.startswith('text/'):
         return render_template(path_orginal)
-    fs = os.fstat(f.fileno())
-    res = Response()
-    res.headers.set("Content-type", ctype)
-    res.headers.set("Content-Length", str(fs[6]))
-    res.response = f
-    return res
+    return make_response(f,mimetypes=ctype)
 
 
 def test(port=5000, debug=False, helper=None):
@@ -144,6 +139,7 @@ def test(port=5000, debug=False, helper=None):
             print '[INFO] Log helper successfully.'
             mod.add_helpers(app)
 
+    app.jinja_env.cache = {}
     app.run(port=port, debug=debug)
 
 if __name__ == "__main__":
