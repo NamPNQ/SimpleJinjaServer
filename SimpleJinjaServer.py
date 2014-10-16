@@ -129,7 +129,8 @@ def index(path):
         return None
     if ctype.startswith('text/'):
         return render_template(path_orginal)
-    return make_response(f,mimetypes=ctype)
+    fs = os.fstat(f.fileno())
+    return make_response(f,200,{"Content-type": ctype, "Content-Length", str(fs[6])})
 
 
 def test(port=5000, debug=False, helper=None):
