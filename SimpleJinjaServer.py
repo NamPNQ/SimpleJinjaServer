@@ -132,7 +132,7 @@ def test(port=5000, debug=False, helper=None):
             mod.add_helpers(app)
 
     app.jinja_env.cache = {}
-    app.run(port=port, debug=debug)
+    app.run(port=port, debug=debug, use_reloader=False)
 
 if __name__ == "__main__":
     if len(sys.argv) == 2:
